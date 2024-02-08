@@ -1,0 +1,90 @@
+SELECT *
+FROM Impiegato
+WHERE Eta > 29;
+
+SELECT *
+FROM Impiegato
+WHERE RedditoMensile >= 800;
+
+SELECT *
+FROM Impiegato
+WHERE DetrazioneFiscale = 1;
+
+SELECT *
+FROM Impiegato
+WHERE DetrazioneFiscale = 0;
+
+SELECT *
+FROM Impiegato
+WHERE Cognome LIKE 'G%'
+ORDER BY Cognome;
+
+SELECT COUNT(*) AS TotaleImpiegati
+FROM Impiegato;
+
+SELECT SUM(RedditoMensile) AS TotaleMensile
+FROM Impiegato;
+
+SELECT AVG(RedditoMensile) AS MediaMensile
+FROM Impiegato;
+
+SELECT MAX(RedditoMensile) AS RedditoMaggiore
+FROM Impiegato;
+
+SELECT MIN(RedditoMensile) AS RedditoMaggiore
+FROM Impiegato;
+
+SELECT *
+FROM Impiego
+WHERE DataAssunzione >= '2007-01-01' AND DataAssunzione < '2008-01-01';
+
+SELECT Impiegato.*
+FROM Impiegato
+JOIN Impiego ON Impiegato.IDImpiego = Impiego.IDImpiego
+WHERE Impiego.TipoImpiego = 'Full-Time';
+
+SELECT AVG(Eta) AS EtaMedia
+FROM Impiegato;
+
+CREATE PROCEDURE InserireImpiegato
+    @IDImpiegato INT,
+    @Cognome VARCHAR(20),
+    @Nome VARCHAR(20),
+    @CodiceFiscale VARCHAR(16),
+    @Eta INT,
+    @RedditoMensile MONEY,
+    @DetrazioneFiscale BIT
+AS
+BEGIN
+    INSERT INTO Impiegato (Cognome, Nome, CodiceFiscale, Eta, RedditoMensile, DetrazioneFiscale)
+    VALUES (@Cognome, @Nome, @CodiceFiscale, @Eta, @RedditoMensile, @DetrazioneFiscale);
+END;
+
+CREATE PROCEDURE AggiornaImpiegato
+    @IDImpiegato INT,
+    @Cognome VARCHAR(20),
+    @Nome VARCHAR(20),
+    @CodiceFiscale VARCHAR(16),
+    @Eta INT,
+    @RedditoMensile DECIMAL(10,2),
+    @DetrazioneFiscale BIT
+AS
+BEGIN
+    UPDATE Impiegato
+    SET
+        Cognome = @Cognome,
+        Nome = @Nome,
+        CodiceFiscale = @CodiceFiscale,
+        Eta = @Eta,
+        RedditoMensile = @RedditoMensile,
+        DetrazioneFiscale = @DetrazioneFiscale
+    WHERE IDImpiegato = @IDImpiegato;
+END;
+
+CREATE PROCEDURE DeleteImpiegato
+    @IDImpiegato INT
+AS
+BEGIN
+    DELETE FROM Impiegato
+    WHERE IDImpiegato = @IDImpiegato;
+END;
